@@ -376,10 +376,10 @@ public class JavaBank extends JFrame {
 
         if (noAccounts == 0) {
             displayJTextArea.setText("No Accounts currently created");
-        }else {
+        } else {
             for (int i=0; i<noAccounts; i++) {
-                // Using displayAccountDetails method to display account details
-                displayAccountDetails(myAccounts[i]);
+                // Using toString() method directly to display account details
+                displayJTextArea.append(myAccounts[i].toString() + "\n");
             }//endfor
         }//endif
 
