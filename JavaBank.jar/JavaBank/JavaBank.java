@@ -332,41 +332,101 @@ public class JavaBank extends JFrame {
 
 
     private void transactionJButtonActionPerformed(ActionEvent event) {
-
         displayJTextArea.setText("");
 
         if (noAccounts == 0) {
             displayJTextArea.setText("No Accounts currently created");
-        }else
-        {
-            // get user input
-            int accountNum = Integer.parseInt(accountNumJTextField.getText());
-            int deposit = Integer.parseInt(depositJTextField.getText());
-            int withdraw = Integer.parseInt(withdrawJTextField.getText());
+            return;
+        }
 
-            for (int i=0; i<noAccounts; i++) {
-                if ((myAccounts[i].getAccountNum() == accountNum) && (deposit>0)) {
-                    myAccounts[i].setBalance(myAccounts[i].getBalance()+deposit);
-                    // Using toString() method to display account details
-                    displayJTextArea.setText(myAccounts[i].toString());
-                }//endif
+        try {
+            // Get account number from TextField
+            int accountNum;
+            try {
+                accountNum = Integer.parseInt(accountNumJTextField.getText());
+            } catch (NumberFormatException e) {
+                displayJTextArea.setText("Invalid account number. Please enter a valid number.");
+                return;
+            }
 
-                if ((myAccounts[i].getAccountNum() == accountNum) && (withdraw>0)) {
-                    myAccounts[i].setBalance(myAccounts[i].getBalance()-withdraw);
-                    // Using toString() method to display account details
-                    displayJTextArea.setText(myAccounts[i].toString());
-                }//endif
-            }//endfor
-        }//endif
+            // Get deposit and withdraw amounts
+            int deposit = 0;
+            int withdraw = 0;
 
-        // clear other JTextFields for new data
-        nameJTextField.setText(" ");
-        accountNumJTextField.setText("0");
-        balanceJTextField.setText("0");
-        depositJTextField.setText("0");
-        withdrawJTextField.setText("0");
+            try {
+                if (!depositJTextField.getText().isEmpty() && !depositJTextField.getText().equals("0")) {
+                    deposit = Integer.parseInt(depositJTextField.getText());
+                    if (deposit < 0) {
+                        displayJTextArea.setText("Deposit amount cannot be negative.");
+                        return;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                displayJTextArea.setText("Invalid deposit amount. Please enter a valid number.");
+                return;
+            }
 
-    }//end method TransactionJButtonActionPerformed
+            try {
+                if (!withdrawJTextField.getText().isEmpty() && !withdrawJTextField.getText().equals("0")) {
+                    withdraw = Integer.parseInt(withdrawJTextField.getText());
+                    if (withdraw < 0) {
+                        displayJTextArea.setText("Withdraw amount cannot be negative.");
+                        return;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                displayJTextArea.setText("Invalid withdraw amount. Please enter a valid number.");
+                return;
+            }
+
+            // Check if both deposit and withdraw are zero
+            if (deposit == 0 && withdraw == 0) {
+                displayJTextArea.setText("Please enter either a deposit or withdraw amount.");
+                return;
+            }
+
+            // Find the account and perform transaction
+            boolean accountFound = false;
+            for (int i = 0; i < noAccounts; i++) {
+                if (myAccounts[i].getAccountNum() == accountNum) {
+                    accountFound = true;
+
+                    // Handle deposit
+                    if (deposit > 0) {
+                        myAccounts[i].setBalance(myAccounts[i].getBalance() + deposit);
+                        displayJTextArea.setText("Deposit successful.\n" + myAccounts[i].toString());
+                    }
+
+                    // Handle withdraw
+                    if (withdraw > 0) {
+                        // Check if sufficient balance
+                        if (myAccounts[i].getBalance() >= withdraw) {
+                            myAccounts[i].setBalance(myAccounts[i].getBalance() - withdraw);
+                            displayJTextArea.setText("Withdrawal successful.\n" + myAccounts[i].toString());
+                        } else {
+                            displayJTextArea.setText("Insufficient funds for withdrawal.\n" + myAccounts[i].toString());
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            if (!accountFound) {
+                displayJTextArea.setText("Account number " + accountNum + " not found.");
+            }
+        } catch (Exception e) {
+            displayJTextArea.setText("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Clear input fields
+            nameJTextField.setText(" ");
+            accountNumJTextField.setText("0");
+            balanceJTextField.setText("0");
+            depositJTextField.setText("0");
+            withdrawJTextField.setText("0");
+        }
+    }
 
 
     private void displayJButtonActionPerformed(ActionEvent event) {
