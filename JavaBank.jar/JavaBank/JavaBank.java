@@ -378,8 +378,8 @@ public class JavaBank extends JFrame {
             displayJTextArea.setText("No Accounts currently created");
         }else {
             for (int i=0; i<noAccounts; i++) {
-                // Using toString() method to display account details
-                displayJTextArea.append(myAccounts[i].toString() + "\n");
+                // Using displayAccountDetails method to display account details
+                displayAccountDetails(myAccounts[i]);
             }//endfor
         }//endif
 
@@ -392,6 +392,9 @@ public class JavaBank extends JFrame {
 
     }//end method displayJButtonActionPerformed
 
+    private void displayAccountDetails(AbstractBankAccount account) {
+        displayJTextArea.append(account.toString() + "\n");
+    }//end method displayAccountDetails
 
     public static void main(String[] args) {
         // Populate arrays with the word EMPTY

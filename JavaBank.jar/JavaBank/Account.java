@@ -30,4 +30,12 @@ public class Account extends AbstractBankAccount {
 	public String toString() {
 		return "Regular Account | " + super.toString();
 	}
+
+	/**
+	 * Print the account details to the console
+	 * Required by TestCreditAccount class
+	 */
+	public void print() {
+		System.out.println(toString());
+	}
 }
