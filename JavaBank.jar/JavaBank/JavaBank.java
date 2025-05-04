@@ -255,79 +255,93 @@ public class JavaBank extends JFrame {
 
 
     private void createAccountJButtonActionPerformed(ActionEvent event) {
-        // System.out.println("Create Account Button Clicked");
+        try {
+            displayJTextArea.setText("");
+            name = "";
 
-        displayJTextArea.setText("");
-        name = "";
+            //Get name from Text Field
+            name = nameJTextField.getText();
 
-        //Get name from Text Field
-        name = nameJTextField.getText();
+            //Get accountNum from Text Field and convert to int unless blank then set to 0
+            if (accountNumJTextField.getText() == "0") {
+                accountNum = 0;
+            }
+            else {
+                accountNum = Integer.parseInt(accountNumJTextField.getText());
+            }//endif
 
-        //Get accountNum from Text Field and convert to int unless blank then set to 0
-        if (accountNumJTextField.getText() == "0") {
-            accountNum = 0;
+            //Get Balance from Text Field and convert to int unless blank then set to 0
+            if (balanceJTextField.getText() == "0") {
+                balance = 0;
+            }
+            else {
+                balance = Integer.parseInt(balanceJTextField.getText());
+            }//endif
+
+            //int emptyAccount = 11;
+
+            if ((noAccounts <= 9) & (name != "") & (accountNum != 0))  {
+                myAccounts[noAccounts] = new Account(name, accountNum, balance);
+                accountNames[noAccounts] = "USED";
+                //System.out.println(myAccounts[noAccounts].getAccountName());
+                //emptyAccount = i;
+
+                // Using toString() method to display account details
+                displayJTextArea.setText(myAccounts[noAccounts].toString());
+
+                noAccounts ++;
+                System.out.println(noAccounts);
+            }
+            else {
+                displayJTextArea.setText("Both the Name field and Account Number must be completed");
+            }
+
+            if (noAccounts == 10) {
+                // Once account 10 is created. All accounts full.
+                displayJTextArea.setText("All Accounts Full!");
+            }
+        } catch (Exception e) {
+            try {
+                MyException newExc = new MyException("An unhandled error occurred!!");
+                throw newExc;
+            } catch (MyException ex) {
+                displayJTextArea.setText(ex.getMessage());
+                ex.printStackTrace();
+            }
+        } finally {
+            // clear other JTextFields for new data
+            nameJTextField.setText(" ");
+            accountNumJTextField.setText("0");
+            balanceJTextField.setText("0");
+            depositJTextField.setText("0");
+            withdrawJTextField.setText("0");
         }
-        else {
-            accountNum = Integer.parseInt(accountNumJTextField.getText());
-        }//endif
-
-        //Get Balance from Text Field and convert to int unless blank then set to 0
-        if (balanceJTextField.getText() == "0") {
-            balance = 0;
-        }
-        else {
-            balance = Integer.parseInt(balanceJTextField.getText());
-        }//endif
-
-        //int emptyAccount = 11;
-
-        if ((noAccounts <= 9) & (name != "") & (accountNum != 0))  {
-            myAccounts[noAccounts] = new Account(name, accountNum, balance);
-            accountNames[noAccounts] = "USED";
-            //System.out.println(myAccounts[noAccounts].getAccountName());
-            //emptyAccount = i;
-
-            // Using toString() method to display account details
-            displayJTextArea.setText(myAccounts[noAccounts].toString());
-
-            noAccounts ++;
-            System.out.println(noAccounts);
-        }
-        else {
-            displayJTextArea.setText("Both the Name field and Account Number must be completed");
-        }
-
-        if (noAccounts == 10) {
-            // Once account 10 is created. All accounts full.
-            displayJTextArea.setText("All Accounts Full!");
-        }
-
-        // clear other JTextFields for new data
-        nameJTextField.setText(" ");
-        accountNumJTextField.setText("0");
-        balanceJTextField.setText("0");
-        depositJTextField.setText("0");
-        withdrawJTextField.setText("0");
-
     }//end method CreateAccountJButtonActionPerformed
 
 
     private void deleteAccountJButtonActionPerformed(ActionEvent event) {
+        try {
+            displayJTextArea.setText("Oops this isnt coded in this version!");
+            //Name = NameJTextField.getText();
+            //System.out.println("Delete Account: " + Name);
 
-        displayJTextArea.setText("Oops this isnt coded in this version!");
-        //Name = NameJTextField.getText();
-        //System.out.println("Delete Account: " + Name);
-
-        // Enter code to delete here
-
-        // clear JTextFields for new data
-
-        nameJTextField.setText(" ");
-        accountNumJTextField.setText("0");
-        balanceJTextField.setText("0");
-        depositJTextField.setText("0");
-        withdrawJTextField.setText("0");
-
+            // Enter code to delete here
+        } catch (Exception e) {
+            try {
+                MyException newExc = new MyException("An unhandled error occurred!!");
+                throw newExc;
+            } catch (MyException ex) {
+                displayJTextArea.setText(ex.getMessage());
+                ex.printStackTrace();
+            }
+        } finally {
+            // clear JTextFields for new data
+            nameJTextField.setText(" ");
+            accountNumJTextField.setText("0");
+            balanceJTextField.setText("0");
+            depositJTextField.setText("0");
+            withdrawJTextField.setText("0");
+        }
     }//end method DeleteAccountJButtonActionPerformed
 
 
@@ -345,8 +359,14 @@ public class JavaBank extends JFrame {
             try {
                 accountNum = Integer.parseInt(accountNumJTextField.getText());
             } catch (NumberFormatException e) {
-                displayJTextArea.setText("Invalid account number. Please enter a valid number.");
-                return;
+                try {
+                    MyException newExc = new MyException("An unhandled error occurred!!");
+                    throw newExc;
+                } catch (MyException ex) {
+                    displayJTextArea.setText("Invalid account number. " + ex.getMessage());
+                    ex.printStackTrace();
+                    return;
+                }
             }
 
             // Get deposit and withdraw amounts
@@ -362,8 +382,14 @@ public class JavaBank extends JFrame {
                     }
                 }
             } catch (NumberFormatException e) {
-                displayJTextArea.setText("Invalid deposit amount. Please enter a valid number.");
-                return;
+                try {
+                    MyException newExc = new MyException("An unhandled error occurred!!");
+                    throw newExc;
+                } catch (MyException ex) {
+                    displayJTextArea.setText("Invalid deposit amount. " + ex.getMessage());
+                    ex.printStackTrace();
+                    return;
+                }
             }
 
             try {
@@ -375,8 +401,14 @@ public class JavaBank extends JFrame {
                     }
                 }
             } catch (NumberFormatException e) {
-                displayJTextArea.setText("Invalid withdraw amount. Please enter a valid number.");
-                return;
+                try {
+                    MyException newExc = new MyException("An unhandled error occurred!!");
+                    throw newExc;
+                } catch (MyException ex) {
+                    displayJTextArea.setText("Invalid withdraw amount. " + ex.getMessage());
+                    ex.printStackTrace();
+                    return;
+                }
             }
 
             // Check if both deposit and withdraw are zero
@@ -416,8 +448,13 @@ public class JavaBank extends JFrame {
                 displayJTextArea.setText("Account number " + accountNum + " not found.");
             }
         } catch (Exception e) {
-            displayJTextArea.setText("An error occurred: " + e.getMessage());
-            e.printStackTrace();
+            try {
+                MyException newExc = new MyException("An unhandled error occurred!!");
+                throw newExc;
+            } catch (MyException ex) {
+                displayJTextArea.setText(ex.getMessage());
+                ex.printStackTrace();
+            }
         } finally {
             // Clear input fields
             nameJTextField.setText(" ");
@@ -426,30 +463,38 @@ public class JavaBank extends JFrame {
             depositJTextField.setText("0");
             withdrawJTextField.setText("0");
         }
-    }
+    }//end method TransactionJButtonActionPerformed
 
 
     private void displayJButtonActionPerformed(ActionEvent event) {
+        try {
+            name = nameJTextField.getText();
+            displayJTextArea.setText("");
 
-        name = nameJTextField.getText();
-        displayJTextArea.setText("");
-
-        if (noAccounts == 0) {
-            displayJTextArea.setText("No Accounts currently created");
-        }else {
-            for (int i=0; i<noAccounts; i++) {
-                // Using displayAccountDetails method to display account details
-                displayAccountDetails(myAccounts[i]);
-            }//endfor
-        }//endif
-
-        // clear other JTextFields for new data
-        nameJTextField.setText(" ");
-        accountNumJTextField.setText("0");
-        balanceJTextField.setText("0");
-        depositJTextField.setText("0");
-        withdrawJTextField.setText("0");
-
+            if (noAccounts == 0) {
+                displayJTextArea.setText("No Accounts currently created");
+            } else {
+                for (int i=0; i<noAccounts; i++) {
+                    // Using displayAccountDetails method to display account details
+                    displayAccountDetails(myAccounts[i]);
+                }//endfor
+            }//endif
+        } catch (Exception e) {
+            try {
+                MyException newExc = new MyException("An unhandled error occurred!!");
+                throw newExc;
+            } catch (MyException ex) {
+                displayJTextArea.setText(ex.getMessage());
+                ex.printStackTrace();
+            }
+        } finally {
+            // clear other JTextFields for new data
+            nameJTextField.setText(" ");
+            accountNumJTextField.setText("0");
+            balanceJTextField.setText("0");
+            depositJTextField.setText("0");
+            withdrawJTextField.setText("0");
+        }
     }//end method displayJButtonActionPerformed
 
     private void displayAccountDetails(AbstractBankAccount account) {
@@ -467,7 +512,13 @@ public class JavaBank extends JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.updateComponentTreeUI(application);
         } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                MyException newExc = new MyException("An unhandled error occurred!!");
+                throw newExc;
+            } catch (MyException ex) {
+                System.err.println(ex.getMessage());
+                ex.printStackTrace();
+            }
         }
     }//end method main
 
