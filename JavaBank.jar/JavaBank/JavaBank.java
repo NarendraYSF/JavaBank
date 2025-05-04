@@ -167,7 +167,16 @@ public class JavaBank extends JFrame {
                     // event handler called when CreateAccountJButton
                     // is clicked
                     public void actionPerformed(ActionEvent event) {
-                        createAccountJButtonActionPerformed(event);
+                        try {
+                            createAccountJButtonActionPerformed(event);
+                        } catch (MyException ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    ex.getMessage(),
+                                    "Account Creation Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            displayJTextArea.setText(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                     }//end method actionPerformed
                 }//end method ActionListener
         ); //end call to createAccountJButton ActionListener
@@ -184,7 +193,16 @@ public class JavaBank extends JFrame {
                     // event handler called when DeleteAccountJButton
                     // is clicked
                     public void actionPerformed(ActionEvent event) {
-                        deleteAccountJButtonActionPerformed(event);
+                        try {
+                            deleteAccountJButtonActionPerformed(event);
+                        } catch (MyException ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    ex.getMessage(),
+                                    "Account Deletion Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            displayJTextArea.setText(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                     }//end method actionPerformed
                 }//end method ActionListener
         ); //end call to deleteAccountJButton ActionListener
@@ -201,7 +219,16 @@ public class JavaBank extends JFrame {
                     // event handler called when TransactionJButton
                     // is clicked
                     public void actionPerformed(ActionEvent event) {
-                        transactionJButtonActionPerformed(event);
+                        try {
+                            transactionJButtonActionPerformed(event);
+                        } catch (MyException ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    ex.getMessage(),
+                                    "Transaction Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            displayJTextArea.setText(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                     }//end method actionPerformed
                 }//end method ActionListener
         ); //end call to transactionJButton ActionListener
@@ -218,7 +245,16 @@ public class JavaBank extends JFrame {
                     // event handler called when TransactionJButton
                     // is clicked
                     public void actionPerformed(ActionEvent event) {
-                        displayJButtonActionPerformed(event);
+                        try {
+                            displayJButtonActionPerformed(event);
+                        } catch (MyException ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    ex.getMessage(),
+                                    "Display Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                            displayJTextArea.setText(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                     }//end method actionPerformed
                 }//end method ActionListener
         ); //end call to displayJButton ActionListener
@@ -254,7 +290,7 @@ public class JavaBank extends JFrame {
     } // end method createUserInterface
 
 
-    private void createAccountJButtonActionPerformed(ActionEvent event) {
+    private void createAccountJButtonActionPerformed(ActionEvent event) throws MyException {
         try {
             displayJTextArea.setText("");
             name = "";
@@ -301,13 +337,8 @@ public class JavaBank extends JFrame {
                 displayJTextArea.setText("All Accounts Full!");
             }
         } catch (Exception e) {
-            try {
-                MyException newExc = new MyException("An unhandled error occurred!!");
-                throw newExc;
-            } catch (MyException ex) {
-                displayJTextArea.setText(ex.getMessage());
-                ex.printStackTrace();
-            }
+            MyException newExc = new MyException("An unhandled error occurred!!");
+            throw newExc;
         } finally {
             // clear other JTextFields for new data
             nameJTextField.setText(" ");
@@ -319,7 +350,7 @@ public class JavaBank extends JFrame {
     }//end method CreateAccountJButtonActionPerformed
 
 
-    private void deleteAccountJButtonActionPerformed(ActionEvent event) {
+    private void deleteAccountJButtonActionPerformed(ActionEvent event) throws MyException {
         try {
             displayJTextArea.setText("Oops this isnt coded in this version!");
             //Name = NameJTextField.getText();
@@ -327,13 +358,8 @@ public class JavaBank extends JFrame {
 
             // Enter code to delete here
         } catch (Exception e) {
-            try {
-                MyException newExc = new MyException("An unhandled error occurred!!");
-                throw newExc;
-            } catch (MyException ex) {
-                displayJTextArea.setText(ex.getMessage());
-                ex.printStackTrace();
-            }
+            MyException newExc = new MyException("An unhandled error occurred!!");
+            throw newExc;
         } finally {
             // clear JTextFields for new data
             nameJTextField.setText(" ");
@@ -345,7 +371,7 @@ public class JavaBank extends JFrame {
     }//end method DeleteAccountJButtonActionPerformed
 
 
-    private void transactionJButtonActionPerformed(ActionEvent event) {
+    private void transactionJButtonActionPerformed(ActionEvent event) throws MyException {
         displayJTextArea.setText("");
 
         if (noAccounts == 0) {
@@ -359,14 +385,8 @@ public class JavaBank extends JFrame {
             try {
                 accountNum = Integer.parseInt(accountNumJTextField.getText());
             } catch (NumberFormatException e) {
-                try {
-                    MyException newExc = new MyException("An unhandled error occurred!!");
-                    throw newExc;
-                } catch (MyException ex) {
-                    displayJTextArea.setText("Invalid account number. " + ex.getMessage());
-                    ex.printStackTrace();
-                    return;
-                }
+                MyException newExc = new MyException("Invalid account number format. Please enter a valid number.");
+                throw newExc;
             }
 
             // Get deposit and withdraw amounts
@@ -377,44 +397,32 @@ public class JavaBank extends JFrame {
                 if (!depositJTextField.getText().isEmpty() && !depositJTextField.getText().equals("0")) {
                     deposit = Integer.parseInt(depositJTextField.getText());
                     if (deposit < 0) {
-                        displayJTextArea.setText("Deposit amount cannot be negative.");
-                        return;
+                        MyException newExc = new MyException("Deposit amount cannot be negative.");
+                        throw newExc;
                     }
                 }
             } catch (NumberFormatException e) {
-                try {
-                    MyException newExc = new MyException("An unhandled error occurred!!");
-                    throw newExc;
-                } catch (MyException ex) {
-                    displayJTextArea.setText("Invalid deposit amount. " + ex.getMessage());
-                    ex.printStackTrace();
-                    return;
-                }
+                MyException newExc = new MyException("Invalid deposit amount format. Please enter a valid number.");
+                throw newExc;
             }
 
             try {
                 if (!withdrawJTextField.getText().isEmpty() && !withdrawJTextField.getText().equals("0")) {
                     withdraw = Integer.parseInt(withdrawJTextField.getText());
                     if (withdraw < 0) {
-                        displayJTextArea.setText("Withdraw amount cannot be negative.");
-                        return;
+                        MyException newExc = new MyException("Withdraw amount cannot be negative.");
+                        throw newExc;
                     }
                 }
             } catch (NumberFormatException e) {
-                try {
-                    MyException newExc = new MyException("An unhandled error occurred!!");
-                    throw newExc;
-                } catch (MyException ex) {
-                    displayJTextArea.setText("Invalid withdraw amount. " + ex.getMessage());
-                    ex.printStackTrace();
-                    return;
-                }
+                MyException newExc = new MyException("Invalid withdraw amount format. Please enter a valid number.");
+                throw newExc;
             }
 
             // Check if both deposit and withdraw are zero
             if (deposit == 0 && withdraw == 0) {
-                displayJTextArea.setText("Please enter either a deposit or withdraw amount.");
-                return;
+                MyException newExc = new MyException("Please enter either a deposit or withdraw amount.");
+                throw newExc;
             }
 
             // Find the account and perform transaction
@@ -436,7 +444,10 @@ public class JavaBank extends JFrame {
                             myAccounts[i].setBalance(myAccounts[i].getBalance() - withdraw);
                             displayJTextArea.setText("Withdrawal successful.\n" + myAccounts[i].toString());
                         } else {
-                            displayJTextArea.setText("Insufficient funds for withdrawal.\n" + myAccounts[i].toString());
+                            MyException newExc = new MyException("Insufficient funds for withdrawal.\nAccount balance: $" +
+                                    myAccounts[i].getBalance() +
+                                    "\nWithdrawal amount: $" + withdraw);
+                            throw newExc;
                         }
                     }
 
@@ -445,16 +456,16 @@ public class JavaBank extends JFrame {
             }
 
             if (!accountFound) {
-                displayJTextArea.setText("Account number " + accountNum + " not found.");
-            }
-        } catch (Exception e) {
-            try {
-                MyException newExc = new MyException("An unhandled error occurred!!");
+                MyException newExc = new MyException("Account number " + accountNum + " not found.");
                 throw newExc;
-            } catch (MyException ex) {
-                displayJTextArea.setText(ex.getMessage());
-                ex.printStackTrace();
             }
+        } catch (MyException e) {
+            // Re-throw the MyException to be caught by the ActionListener
+            throw e;
+        } catch (Exception e) {
+            // Create a new MyException for any other unexpected errors
+            MyException newExc = new MyException("An unhandled error occurred: " + e.getMessage());
+            throw newExc;
         } finally {
             // Clear input fields
             nameJTextField.setText(" ");
@@ -466,7 +477,7 @@ public class JavaBank extends JFrame {
     }//end method TransactionJButtonActionPerformed
 
 
-    private void displayJButtonActionPerformed(ActionEvent event) {
+    private void displayJButtonActionPerformed(ActionEvent event) throws MyException {
         try {
             name = nameJTextField.getText();
             displayJTextArea.setText("");
@@ -480,13 +491,8 @@ public class JavaBank extends JFrame {
                 }//endfor
             }//endif
         } catch (Exception e) {
-            try {
-                MyException newExc = new MyException("An unhandled error occurred!!");
-                throw newExc;
-            } catch (MyException ex) {
-                displayJTextArea.setText(ex.getMessage());
-                ex.printStackTrace();
-            }
+            MyException newExc = new MyException("An unhandled error occurred!!");
+            throw newExc;
         } finally {
             // clear other JTextFields for new data
             nameJTextField.setText(" ");
@@ -514,9 +520,14 @@ public class JavaBank extends JFrame {
         } catch (Exception e) {
             try {
                 MyException newExc = new MyException("An unhandled error occurred!!");
-                throw newExc;
-            } catch (MyException ex) {
-                System.err.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null,
+                        newExc.getMessage(),
+                        "Look and Feel Error",
+                        JOptionPane.ERROR_MESSAGE);
+                System.err.println(newExc.getMessage());
+                e.printStackTrace();
+            } catch (Exception ex) {
+                System.err.println("Error displaying error message: " + ex.getMessage());
                 ex.printStackTrace();
             }
         }
